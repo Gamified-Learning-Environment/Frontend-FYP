@@ -2,6 +2,12 @@
 
 This is the repository for managing the frontend of my Gamified Learning Environment where I plan to build a responsive and user-friendly interface that will allow the user to interact with every aspect of the GLE. The quiz interaction, results, recommendations, etc.
 
+### Contains: 
+Quiz display, gamified dashboard (leaderboards, progress tracking), user interactions (login, register, etc.).
+### Technologies: 
+NextJS (or Vue.js), Tailwind CSS, Axios for API calls.
+
+### Project Proposal Excerpt
 Frontend:
 • Next.js/Vue: Next.js makes use of Server-side rendering which should ensure fast load times and 
 efficient handling of both the frontend and backend of my GLE within a single codebase. It’s also 
