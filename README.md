@@ -1,4 +1,6 @@
-# Frontend-FYP
+# FYP - Frontend Repository
+
+This is the repository for managing the frontend of my Gamified Learning Environment. 
 
 Frontend:
 • Next.js/Vue: Next.js makes use of Server-side rendering which should ensure fast load times and 
