@@ -1,9 +1,9 @@
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { clerkClient, WebhookEvent } from '@clerk/nextjs/server'
-//import { createUser, deleteUser, updateUser } from '@/lib/actions/user.actions'
+import { createUser, deleteUser, updateUser } from '@/lib/actions/user.actions'
 import { NextResponse } from 'next/server'
-//import { UpdateUserParams } from '@/types'
+import { UpdateUserParams } from '@/types'
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
@@ -66,7 +66,7 @@ export async function POST(req: Request) {
         photo: image_url,
       }
   
-      //const newUser = await createUser(user);
+      const newUser = await createUser(user);
   
       if(newUser) {
           await clerkClient.users.updateUserMetadata(id, {
@@ -79,7 +79,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: 'OK', user: newUser })
   }
 
-  if (eventType === 'user.updated') {
+  if (noteType === 'user.updated') {
     const {id, image_url, first_name, last_name, username } = evt.data
     
     const user: UpdateUserParams = {
@@ -94,7 +94,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'OK', user: updatedUser })
   }
 
-  if (eventType === 'user.deleted') {
+  if (noteType === 'user.deleted') {
     const { id } = evt.data
 
     const deletedUser = await deleteUser(id!)

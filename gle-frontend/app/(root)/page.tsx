@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 
+
 export default function Home() {
   return (
     <>
@@ -29,6 +30,8 @@ export default function Home() {
 
       <section id="notes" className="wrapper my-8 flex flex-col gap-8 md:gap-12">
 
+
+        {/* Hero Section 
         <div className="flex w-full flex-col gap-5 md:flex-row">
           <Search/>
           <CategoryFilter />
@@ -42,7 +45,7 @@ export default function Home() {
           limit={6}
           page={page}
           totalPages={notes?.totalPages}
-        />
+        /> */}
       </section>
     </>
   );
