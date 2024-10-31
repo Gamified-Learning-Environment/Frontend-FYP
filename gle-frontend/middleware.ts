@@ -15,12 +15,14 @@ export default clerkMiddleware({
 } as ClerkMiddlewareOptions);
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    
-    // Skip all routes that are not API routes
-    '/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)', 
-    // Always run for API routes
-    '/(api|trpc)(.*)',
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - public folder
+     */
+    '/((?!_next/static|_next/image|favicon.ico|public/).*)',
+    '/',
   ],
 };
