@@ -60,6 +60,7 @@ export async function deleteUser(clerkId: string) {
       // Update the 'notes' collection to remove references to the user
       Note.updateMany(
         { _id: { $in: userToDelete.notes } },
+        { $pull: { user: userToDelete._id } }
       ),
     ])
 

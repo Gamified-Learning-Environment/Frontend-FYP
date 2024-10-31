@@ -11,7 +11,7 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: 'GLE',
+  title: 'Exper',
   description: 'Gamified Learning Environment',
   icons: {
     //icon: '/assets/images/logo.svg'

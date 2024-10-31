@@ -8,10 +8,6 @@ export const headerLinks = [
       route: '/notes/create',
     },
     {
-        label: 'My Notes',
-        route: '/notes',
-    },
-    {
       label: 'My Profile',
       route: '/profile',
     },
@@ -20,7 +16,5 @@ export const headerLinks = [
   export const noteDefaultValues = {
     title: '',
     content: '',
-    subject: '',
-    tags: [],
-    createdAt: new Date(),
+    subjectId: '',
   }

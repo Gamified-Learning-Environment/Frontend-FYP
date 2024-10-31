@@ -21,21 +21,22 @@ export type CreateUserParams = {
     note: {
       title: string;
       content: string;
-      subject: string;
-      tags: string[];
+      subjectId: string;
       difficulty: 'beginner' | 'intermediate' | 'expert';
     };
+    path: string;
   };
   
   export type UpdateNoteParams = {
+    userId: string;
     note: {
       _id: string;
       title: string;
       content: string;
-      subject: string;
-      tags: string[];
+      subjectId: string;
       difficulty: 'beginner' | 'intermediate' | 'expert';
     };
+    path: string;
   };
   
   export type DeleteNoteParams = {
@@ -44,7 +45,6 @@ export type CreateUserParams = {
   };
   
   export type GetAllNotesParams = {
-    userId: string;
     query: string;
     subject: string;
     limit: number;
@@ -56,25 +56,33 @@ export type CreateUserParams = {
     limit?: number;
     page: number;
   };
+
+  export type GetRelatedNotesBySubjectParams = {
+    subjectId: string
+    noteId: string
+    limit?: number
+    page: number | string
+  }
   
   export type Note = {
     _id: string;
     title: string;
     content: string;
-    subject: string;
-    tags: string[];
-    createdAt: Date;
     difficulty: 'beginner' | 'intermediate' | 'expert';
-    user: {
+    noteOwner: {
       _id: string;
       firstName: string;
       lastName: string;
     };
+    subject: {
+      _id: string;
+      name: string;
+    };
   };
   
-  // ====== CATEGORY PARAMS
-  export type CreateCategoryParams = {
-    categoryName: string
+  // ====== SUBJECT PARAMS
+  export type CreateSubjectParams = {
+    subjectName: string
   }
   
   export type SearchParamProps = {

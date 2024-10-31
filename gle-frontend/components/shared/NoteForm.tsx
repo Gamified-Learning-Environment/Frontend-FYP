@@ -6,35 +6,43 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "../ui/checkbox";
 import { useRouter } from "next/navigation";
 import { createNote, updateNote } from "@/lib/actions/note.actions";
-import { INote as INoteData } from "@/lib/database/models/note.model";
+import { INote } from "@/lib/database/models/note.model";
 import { noteFormSchema } from "@/lib/validator";
 import * as z from 'zod'
+import { noteDefaultValues } from "@/constants";
+import Dropdown from "./Dropdown";
+import useState from 'react'
+
 
 type NoteFormProps = {
   userId: string;
   type: "Create" | "Update";
-  note?: INoteData;
+  note?: INote;
   noteId?: string;
 };
 
 const NoteForm = ({ userId, type, note, noteId }: NoteFormProps) => {
+  const initialValues = note && type === 'Update' 
+    ? { 
+      ...note, 
+    }
+    : noteDefaultValues;
   const router = useRouter();
 
   const form = useForm<z.infer<typeof noteFormSchema>>({
     resolver: zodResolver(noteFormSchema),
-    defaultValues: note && type === 'Update' ? note : { title: '', content: '', tags: [], generateQuiz: false },
+    defaultValues: initialValues
   });
 
   async function onSubmit(values: z.infer<typeof noteFormSchema>) {
     if (type === 'Create') {
       try {
         const newNote = await createNote({
-          note: values,
           userId,
-          path: '/notes',
+          note: { ...values, tags: values.tags ?? '', difficulty: values.difficulty ?? 'beginner' },
+          path: '/profile',
         });
 
         if (newNote) {
@@ -55,7 +63,7 @@ const NoteForm = ({ userId, type, note, noteId }: NoteFormProps) => {
       try {
         const updatedNote = await updateNote({
           userId,
-          note: { ...values, _id: noteId },
+          note: { ...values, _id: noteId, tags: values.tags ?? '', difficulty: values.difficulty ?? 'beginner' },
           path: `/notes/${noteId}`,
         });
 
