@@ -26,7 +26,8 @@ type NoteFormProps = {
 const NoteForm = ({ userId, type, note, noteId }: NoteFormProps) => {
   const initialValues = note && type === 'Update' 
     ? { 
-      ...note, 
+      ...note,
+      subject: note.subject._id, // Transform subject to its _id
     }
     : noteDefaultValues;
   const router = useRouter();
@@ -40,14 +41,14 @@ const NoteForm = ({ userId, type, note, noteId }: NoteFormProps) => {
     if (type === 'Create') {
       try {
         const newNote = await createNote({
-          userId,
-          note: { ...values, tags: values.tags ?? '', difficulty: values.difficulty ?? 'beginner' },
+          note: { ...values, difficulty: values.difficulty ?? 'beginner', },
+          userId, 
           path: '/profile',
         });
 
         if (newNote) {
           form.reset();
-          router.push(`/notes/${newNote._id}`);
+          router.push(`/notes/${newNote._id}`)
         }
       } catch (error) {
         console.log(error);
@@ -63,7 +64,7 @@ const NoteForm = ({ userId, type, note, noteId }: NoteFormProps) => {
       try {
         const updatedNote = await updateNote({
           userId,
-          note: { ...values, _id: noteId, tags: values.tags ?? '', difficulty: values.difficulty ?? 'beginner' },
+          note: { ...values, difficulty: values.difficulty ?? 'beginner', _id: noteId },
           path: `/notes/${noteId}`,
         });
 
@@ -80,64 +81,75 @@ const NoteForm = ({ userId, type, note, noteId }: NoteFormProps) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5">
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem className="w-full">
-              <FormLabel>Title</FormLabel>
-              <FormControl>
-                <Input placeholder="Note title" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex flex-col gap-5 md:flex-row">
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Title</FormLabel>
+                <FormControl>
+                  <Input placeholder="Note title" {...field} className="input-field"/>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="subjectId"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl>
+                  <Dropdown onChangeHandler={field.onChange} value={field.value} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
-        <FormField
-          control={form.control}
-          name="content"
-          render={({ field }) => (
-            <FormItem className="w-full">
-              <FormLabel>Content</FormLabel>
-              <FormControl>
-                <Textarea placeholder="Note content" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex flex-col gap-5 md:flex-row">
+          <FormField
+              control={form.control}
+              name="content"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormControl className="h-72">
+                    <Textarea placeholder="Content" {...field} className="textarea rounded-2xl" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+        </div>
 
-        <FormField
-          control={form.control}
-          name="tags"
-          render={({ field }) => (
-            <FormItem className="w-full">
-              <FormLabel>Tags</FormLabel>
-              <FormControl>
-                <Input placeholder="Comma-separated tags" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex flex-col gap-5 md:flex-row">
+          <FormField
+            control={form.control}
+            name="difficulty"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Difficulty</FormLabel>
+                <FormControl>
+                  <Input placeholder="Difficulty" {...field} className="input-field"/>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        
 
-        <FormField
-          control={form.control}
-          name="subject"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input placeholder="Subject" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <Button type="submit" size="lg" disabled={form.formState.isSubmitting} className="button col-span-2 w-full">
-          {form.formState.isSubmitting ? 'Submitting...' : `${type} Note`}
-        </Button>
+        <Button 
+          type="submit"
+          size="lg"
+          disabled={form.formState.isSubmitting}
+          className="button col-span-2 w-full"
+        >
+          {form.formState.isSubmitting ? (
+            'Submitting...'
+          ): `${type} Note `}</Button>
       </form>
     </Form>
   );

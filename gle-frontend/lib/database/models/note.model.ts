@@ -12,7 +12,6 @@ export interface INote extends Document {
 const NoteSchema = new Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
   difficulty: { type: String, enum: ['beginner', 'intermediate', 'expert'] },
   subject: { type: Schema.Types.ObjectId, ref: 'Subject' },
   noteOwner: { type: Schema.Types.ObjectId, ref: 'User' },
